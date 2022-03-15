@@ -1,0 +1,22 @@
+<% layout('layouts/boilerplate') %>
+    <div class="money-image w-100 vh-100 d-flex justify-content-center align-items-center">
+        <div class="customerBox">
+            <% for(let c of customers) { %>
+                <% if(c.name !==customer.name) { %>
+                    <div class="card col-4">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= c.name %>
+                            </h5>
+                            <p class="card-text">
+                                <%= c.email %>
+                            </p>
+                            <a href="/customers/<%= c._id %>/send/<%= customer._id %> " class="btn">Send Money</a>
+                        </div>
+                    </div>
+
+
+                    <% } %>
+                        <% } %>
+        </div>
+    </div>

@@ -1,0 +1,73 @@
+<% layout('layouts/boilerplate') %>
+    <div class="money-image w-90 vh-100">
+        <% if(c.length !==0) { %>
+            <main class="container col-6 offset-3">
+                <div class="row">
+                    <div class="soloContainer col-6">
+                        <div class="soloCard">
+                            <div class="soloBox">
+                                <div class="soloContent">
+                                    <h2>
+                                        <%= p.name %>
+                                    </h2>
+                                    <h6>
+                                        <%= p.email %>
+                                    </h6>
+                                    <h5 class="money"> Balance amount &#36;<%= p.balance %>
+                                    </h5>
+                                    <a href="/customers/<%= p._id %>/choose">Transfer Money</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="transferTable col-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Sent To</th>
+                                    <th scope="col">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(let i=0; i< c.length; i++) { %>
+                                    <tr class="table-light">
+                                        <th scope="row">
+                                            <%= i+1 %>
+                                        </th>
+                                        <td>
+                                            <%= c[i].receiver %>
+                                        </td>
+                                        <td>
+                                            &#36; <%= c[i].money %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+            <% } else { %>
+                <main class="container">
+                    <div class="soloContainerTwo">
+                        <div class="soloCard">
+                            <div class="soloBox">
+                                <div class="soloContent">
+                                    <h2>
+                                        <%= p.name %>
+                                    </h2>
+                                    <h6>
+                                        <%= p.email %>
+                                    </h6>
+                                    <h5 class="money"> Balance amount &#36;<%= p.balance %>
+                                    </h5>
+                                    <a href="/customers/<%= p._id %>/choose">Transfer Money</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <% } %>
+    </div>

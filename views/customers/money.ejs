@@ -1,0 +1,166 @@
+<% layout('layouts/boilerplate') %>
+    <div class="money-image w-100 vh-100 d-flex justify-content-center align-items-center">
+        <div class="moneyContainer">
+            <div class="transferCard">
+                <div class="visaCard">
+                    <div class="front">
+                        <div class="cardNumBox">################</div>
+                        <div class="box">
+                            <div class="innerBox">
+                                <span>CARD HOLDER</span>
+                                <div class="card-holder-name">FULL NAME</div>
+                            </div>
+                            <div class="innerBox">
+                                <span>EXPIRES</span>
+                                <div class="expiration">
+                                    <span class="exp-month">mm</span>
+                                    <span class="exp-year">yy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="stripe"></div>
+                        <div class="innerBox">
+                            <span>cvv</span>
+                            <div class="cvvBox"></div>
+                        </div>
+                    </div>
+                </div>
+                <form action="/customers/<%= customerTo._id %>/<%= customer._id %>?_method=PUT" method="POST"
+                    onsubmit="func()">
+                    <div class="box">
+                        <div class="inputBox">
+                            <span>Card Number</span>
+                            <input type="text" maxlength="16" class="cardNum" required>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <div class="inputBox">
+                            <span>Card Holder</span>
+                            <input type="text" class="cardHolder" required>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                    </div>
+                    <div class="inputBox">
+                        <span>Name of Reciever (BAN-K-ING)</span>
+                        <input type="text" value="<%= customerTo.name %> " name="transfer[receiver]" readonly>
+                    </div>
+                    <div class="box">
+                        <div class="inputBox">
+                            <span>Expiration Month</span>
+                            <select class="monthInput" required>
+                                <option value="month" selected disabled>month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                        <div class="inputBox">
+                            <span>Expiration Year</span>
+                            <select class="yearInput" required>
+                                <option value="year" selected disabled>year</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                                <option value="2031">2031</option>
+                                <option value="2032">2032</option>
+                            </select>
+                        </div>
+                        <div class="inputBox">
+                            <span>CVV</span>
+                            <input type="text" maxlength="4" class="cvv" required>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="inputBox">
+                            <span>Sender Balance</span>
+                            <input class="prevTotal" type="number" placeholder="$" value="<%= customer.balance %>"
+                                readonly>
+                        </div>
+                        <div class="inputBox">
+                            <span>Reciever Balance</span>
+                            <input class="bTotal" type="number" placeholder="$" value="<%= customerTo.balance %>"
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="inputBox">
+                            <span>Amount to Transfer</span>
+                            <input class="transaction" type="number" placeholder="$" name="transfer[money]" required>
+                        </div>
+                        <div class="inputBox">
+                            <span>New Sender Balance</span>
+                            <input class="nextTotal" type="number" name="customer[balance]" readonly>
+                        </div>
+                        <div class="inputBox">
+                            <span>New Reciever Balance</span>
+                            <input class="aTotal" type="number" name="customerTo[balance]" readonly>
+                        </div>
+                    </div>
+
+                    <input type="submit" value="submit" class="button">
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        document.querySelector(".cardNum").oninput = () => {
+            document.querySelector(".cardNumBox").innerText = document.querySelector(".cardNum").value
+        }
+        document.querySelector(".cardHolder").oninput = () => {
+            document.querySelector(".card-holder-name").innerText = document.querySelector(".cardHolder").value
+        }
+        document.querySelector(".monthInput").oninput = () => {
+            document.querySelector(".exp-month").innerText = document.querySelector(".monthInput").value
+        }
+        document.querySelector(".yearInput").oninput = () => {
+            document.querySelector(".exp-year").innerText = document.querySelector(".yearInput").value
+        }
+        document.querySelector(".cvv").onmouseenter = () => {
+            document.querySelector(".front").style.transform = 'perspective(1000px) rotateY(-180deg)';
+            document.querySelector(".back").style.transform = 'perspective(1000px) rotateY(0deg)';
+        }
+        document.querySelector(".cvv").onmouseleave = () => {
+            document.querySelector(".front").style.transform = 'perspective(1000px) rotateY(0deg)';
+            document.querySelector(".back").style.transform = 'perspective(1000px) rotateY(180deg)';
+        }
+        document.querySelector(".cvv").oninput = () => {
+            document.querySelector(".cvvBox").innerText = document.querySelector(".cvv").value
+        }
+
+        function func() {
+            const before = parseInt(document.querySelector(".bTotal").value);
+            const prev = parseInt(document.querySelector(".prevTotal").value);
+            const mid = parseInt(document.querySelector(".transaction").value);
+            if (prev < mid) {
+                alert('Not enough money in account')
+            }
+            else {
+                const after = before + mid;
+                document.querySelector(".aTotal").value = after;
+                const next = prev - mid;
+                document.querySelector(".nextTotal").value = next;
+                alert('Money transferred')
+            }
+            // module.exports.mid = mid;
+        }
+
+    </script>

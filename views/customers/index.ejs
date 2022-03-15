@@ -1,0 +1,24 @@
+<% layout('layouts/boilerplate') %>
+    <div class="banner-image w-100 vh-100">
+        <div class="mainContainer">
+            <% for(let i=0; i<10; i+=2) { %>
+                <div class="customerContainer">
+                    <% for(let j=i; j<i+2; j++) { %>
+                        <% customer=customers[j] %>
+                            <div class="customerCard">
+                                <div class="customerContent">
+                                    <h3>
+                                        <%= customer.name %>
+                                    </h3>
+                                    <p>
+                                        <%= customer.email %>
+                                    </p>
+                                    <a href="customers/<%= customer._id %>" class="customerButton">View Customer</a>
+                                </div>
+                            </div>
+                            <% } %>
+                </div>
+                <% } %>
+        </div>
+
+    </div>
